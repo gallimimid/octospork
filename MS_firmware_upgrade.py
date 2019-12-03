@@ -21,11 +21,13 @@ print(response.status_code,response.headers)
 
 while True:
     time.sleep(5)
-    response = requests.get(
-        'http://{host}/app_upload.htm'.format(host=ip_address),
-        verify=False,
-        auth=requests.auth.HTTPBasicAuth('admin', 'admin')
-        )
-    print(response.status_code,response.headers)
-    if response.status_code != 200:
-        break
+    try:
+        response = requests.get(
+            'http://{host}/app_upload.htm'.format(host=ip_address),
+            verify=False,
+            auth=requests.auth.HTTPBasicAuth('admin', 'admin')
+            )
+        print(response.status_code,response.headers)
+    except requests.exceptions.RequestException as e:
+        print e
+        sys.exit(1)
