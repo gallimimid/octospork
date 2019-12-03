@@ -29,5 +29,5 @@ while True:
             )
         print(response.status_code,response.headers)
     except requests.exceptions.RequestException as e:
-        print e
-        sys.exit(1)
+        print(e)
+        break
