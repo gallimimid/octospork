@@ -2,26 +2,27 @@ import requests
 
 requests.packages.urllib3.disable_warnings()
 
-ip_address = '10.130.19.4'
+ip_addresses = ['10.1.1.1','10.1.1.2']
 
-# Authenticate
+for ip_address in ip_addresses:
 
-url = 'https://{host}/rest/mbdetnrs/1.0/oauth2/token'.format(host=ip_address)
+    # Authenticate
+    url = 'https://{host}/rest/mbdetnrs/1.0/oauth2/token'.format(host=ip_address)
 
-json = {'username':'admin','password':'reallysecurepassword','grant_type':'password','scope':'GUIAccess'}
+    json = {'username':'admin','password':'reallysecurepassword','grant_type':'password','scope':'GUIAccess'}
 
-response = requests.post(url, verify=False, json=json)
-print(response)
-access_token = response.json()['access_token']
+    response = requests.post(url, verify=False, json=json)
+    print(response)
+    access_token = response.json()['access_token']
 
-print(access_token)
+    print(access_token)
 
-# Upgrade network card firmware
-url = 'https://{host}/rest/mbdetnrs/1.0/managers/1/actions/upgrade'.format(host=ip_address)
+    # Upgrade network card firmware
+    url = 'https://{host}/rest/mbdetnrs/1.0/managers/1/actions/upgrade'.format(host=ip_address)
 
-headers = {'Authorization':  'Bearer ' + access_token}
+    headers = {'Authorization':  'Bearer ' + access_token}
 
-files = {'upgradeFile': open('Network-M2 1.5.1 firmware.img', 'rb')}
+    files = {'upgradeFile': open('Network-M2 1.7.5 firmware.tar', 'rb')}
 
-response = requests.post(url, verify=False, headers=headers, files=files)
-print(response.status_code,response.headers)
+    response = requests.post(url, verify=False, headers=headers, files=files)
+    print(ip_address, response.status_code)
